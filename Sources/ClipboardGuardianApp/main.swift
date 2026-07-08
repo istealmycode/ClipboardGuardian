@@ -70,6 +70,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let analyzer = Analyzer(rules: [PrivateKeyDetectionRule(), AWSCredentialDetectionRule()])
         statusBarController = StatusBarController(analyzer: analyzer)
         statusBarController?.startPolling()
+        // Ensure any windows are hidden immediately and prevent activation.
+        for win in NSApp.windows {
+            win.orderOut(nil)
+        }
+        NSApp.hide(nil)
     }
 }
 
