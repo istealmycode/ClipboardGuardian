@@ -15,8 +15,29 @@ A macOS menu-bar clipboard safety monitor that turns red for dangerous clipboard
 
 ```bash
 swift build --product ClipboardGuardianApp
-.open .build/ClipboardGuardianApp.app
+./.build/arm64-apple-macosx/debug/ClipboardGuardianApp
 ```
+
+## Desktop Launcher
+
+The repo includes a launcher app at `ClipboardGuardianLauncher.app`.
+
+Copy it to your Desktop:
+
+```bash
+cp -R ClipboardGuardianLauncher.app ~/Desktop/ClipboardGuardianLauncher.app
+```
+
+Launch it (or double-click it in Finder):
+
+```bash
+open -g ~/Desktop/ClipboardGuardianLauncher.app
+```
+
+Notes:
+
+- The launcher starts `ClipboardGuardianApp` in the background.
+- Repeated launches do not spawn multiple app instances.
 
 ## Test
 
