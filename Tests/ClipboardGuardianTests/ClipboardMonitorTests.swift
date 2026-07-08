@@ -1,4 +1,4 @@
-import XCTest
+import Testing
 @testable import ClipboardGuardian
 import AppKit
 
@@ -25,7 +25,8 @@ struct TestRule: DetectionRule {
     }
 }
 
-final class ClipboardMonitorTests: XCTestCase {
+struct ClipboardMonitorTests {
+    @Test
     func testCheckOnce_callsAnalyzerOnChange() {
         let mock = MockPasteboard()
         mock.changeCount = 0
@@ -40,14 +41,15 @@ final class ClipboardMonitorTests: XCTestCase {
         mock.setString("this will trigger")
         monitor.checkOnce()
 
-        XCTAssertEqual(received.count, 1)
-        XCTAssertEqual(received.first?.first?.category, "test")
+        #expect(received.count == 1)
+        #expect(received.first?.first?.category == "test")
 
         // No further change -> no callback
         monitor.checkOnce()
-        XCTAssertEqual(received.count, 1)
+        #expect(received.count == 1)
     }
 
+    @Test
     func testCheckOnce_notifiesSafeClipboardAfterDangerousContent() {
         let mock = MockPasteboard()
         mock.changeCount = 0
@@ -61,12 +63,12 @@ final class ClipboardMonitorTests: XCTestCase {
 
         mock.setString("this will trigger")
         monitor.checkOnce()
-        XCTAssertEqual(received.count, 1)
-        XCTAssertFalse(received[0].isEmpty)
+        #expect(received.count == 1)
+        #expect(!received[0].isEmpty)
 
         mock.setString("safe clipboard text")
         monitor.checkOnce()
-        XCTAssertEqual(received.count, 2)
-        XCTAssertTrue(received[1].isEmpty)
+        #expect(received.count == 2)
+        #expect(received[1].isEmpty)
     }
 }
