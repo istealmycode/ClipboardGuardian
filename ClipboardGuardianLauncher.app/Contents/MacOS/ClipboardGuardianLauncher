@@ -1,0 +1,15 @@
+#!/bin/zsh
+set -euo pipefail
+PROJECT="/Users/john/Projects/ClipboardGuardian/ClipboardGuardian"
+BIN=$(find "$PROJECT/.build" -type f -name ClipboardGuardianApp ! -path "*.dSYM/*" | head -n 1)
+if [[ -z "$BIN" ]]; then
+  cd "$PROJECT"
+  swift build --product ClipboardGuardianApp >/dev/null 2>&1
+  BIN=$(find "$PROJECT/.build" -type f -name ClipboardGuardianApp ! -path "*.dSYM/*" | head -n 1)
+fi
+if [[ -n "$BIN" ]]; then
+  "$BIN" >/dev/null 2>&1 &
+  disown || true
+else
+  osascript -e 'display dialog "ClipboardGuardianApp binary not found." buttons {"OK"} default button "OK"'
+fi
