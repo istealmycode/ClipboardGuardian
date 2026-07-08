@@ -67,7 +67,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // Dock icon or regular app window when launched directly.
         NSApp.setActivationPolicy(.accessory)
 
-        let analyzer = Analyzer(rules: [PrivateKeyDetectionRule(), AWSCredentialDetectionRule()])
+        let analyzer = Analyzer(rules: defaultDetectionRules())
         statusBarController = StatusBarController(analyzer: analyzer)
         statusBarController?.startPolling()
         // Ensure any windows are hidden immediately and prevent activation.
