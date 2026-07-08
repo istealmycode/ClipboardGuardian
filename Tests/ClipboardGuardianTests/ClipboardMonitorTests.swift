@@ -1,18 +1,17 @@
 import Testing
 @testable import ClipboardGuardian
-import AppKit
 
-final class MockPasteboard: PasteboardProviding {
+final class MockTextProvider: ClipboardTextProviding {
     var changeCount: Int = 0
     private var content: String?
 
-    func setString(_ s: String?) {
+    func setText(_ s: String?) {
         content = s
         changeCount += 1
     }
 
-    func string(forType type: NSPasteboard.PasteboardType) -> String? {
-        return content
+    func currentText() -> String? {
+        content
     }
 }
 
@@ -29,7 +28,7 @@ struct TestRule: DetectionRule {
 struct ClipboardMonitorTests {
     @Test("emits findings only when clipboard change count advances")
     func testCheckOnce_callsAnalyzerOnChange() {
-        let mock = MockPasteboard()
+        let mock = MockTextProvider()
         mock.changeCount = 0
 
         let analyzer = Analyzer(rules: [TestRule()])
@@ -39,7 +38,7 @@ struct ClipboardMonitorTests {
             received.append(findings)
         }
 
-        mock.setString("this will trigger")
+        mock.setText("this will trigger")
         monitor.checkOnce()
 
         #expect(received.count == 1)
@@ -52,7 +51,7 @@ struct ClipboardMonitorTests {
 
     @Test("notifies safe state after previously dangerous clipboard content")
     func testCheckOnce_notifiesSafeClipboardAfterDangerousContent() {
-        let mock = MockPasteboard()
+        let mock = MockTextProvider()
         mock.changeCount = 0
 
         let analyzer = Analyzer(rules: [TestRule()])
@@ -62,12 +61,12 @@ struct ClipboardMonitorTests {
             received.append(findings)
         }
 
-        mock.setString("this will trigger")
+        mock.setText("this will trigger")
         monitor.checkOnce()
         #expect(received.count == 1)
         #expect(!received[0].isEmpty)
 
-        mock.setString("safe clipboard text")
+        mock.setText("safe clipboard text")
         monitor.checkOnce()
         #expect(received.count == 2)
         #expect(received[1].isEmpty)

@@ -14,7 +14,7 @@ final class StatusBarController: NSObject {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         menu = NSMenu()
         super.init()
-        monitor = ClipboardMonitor(analyzer: analyzer) { [weak self] findings in
+        monitor = ClipboardMonitor(provider: MacPasteboardProvider(), analyzer: analyzer) { [weak self] findings in
             self?.handleFindings(findings)
         }
         statusItem.button?.title = "🟢"

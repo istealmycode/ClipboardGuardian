@@ -1,20 +1,17 @@
 import Foundation
-import AppKit
 
-public protocol PasteboardProviding: AnyObject {
+public protocol ClipboardTextProviding: AnyObject {
     var changeCount: Int { get }
-    func string(forType type: NSPasteboard.PasteboardType) -> String?
+    func currentText() -> String?
 }
 
-extension NSPasteboard: PasteboardProviding {}
-
 public final class ClipboardMonitor {
-    private let provider: PasteboardProviding
+    private let provider: ClipboardTextProviding
     private let analyzer: Analyzer
     private let callback: ([Finding]) -> Void
     private var lastChangeCount: Int
 
-    public init(provider: PasteboardProviding = NSPasteboard.general,
+    public init(provider: ClipboardTextProviding,
                 analyzer: Analyzer,
                 callback: @escaping ([Finding]) -> Void) {
         self.provider = provider
@@ -29,7 +26,7 @@ public final class ClipboardMonitor {
         lastChangeCount = current
 
         let findings: [Finding]
-        if let text = provider.string(forType: .string) {
+        if let text = provider.currentText() {
             findings = analyzer.analyze(text)
         } else {
             findings = []
