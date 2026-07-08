@@ -70,6 +70,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let analyzer = Analyzer(rules: [PrivateKeyDetectionRule(), AWSCredentialDetectionRule()])
         statusBarController = StatusBarController(analyzer: analyzer)
         statusBarController?.startPolling()
+        // Hide any windows that might have been created by other code or
+        // accidental launch — keep the app menu-bar-only.
+        for win in NSApp.windows {
+            win.orderOut(nil)
+        }
     }
 }
 
