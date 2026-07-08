@@ -18,10 +18,7 @@ let package = Package(
             name: "clipboardguardian-cli",
             targets: ["clipboardguardian-cli"]
         ),
-        .executable(
-            name: "ClipboardGuardianApp",
-            targets: ["ClipboardGuardianApp"]
-        ),
+        // GUI app removed. Menu-bar functionality retained in core library.
     ],
     dependencies: [
         .package(path: "Dependencies/swift-corelibs-xctest")
@@ -36,10 +33,7 @@ let package = Package(
             name: "clipboardguardian-cli",
             dependencies: ["ClipboardGuardian"]
         ),
-        .executableTarget(
-            name: "ClipboardGuardianApp",
-            dependencies: ["ClipboardGuardian"]
-        ),
+        // GUI executable target removed.
         .testTarget(
             name: "ClipboardGuardianTests",
             dependencies: [
