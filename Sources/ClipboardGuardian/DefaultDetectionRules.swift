@@ -6,6 +6,7 @@ public func defaultDetectionRules() -> [any DetectionRule] {
         GenericCredentialDetectionRule(),
         JWTDetectionRule(),
         EncodedPayloadDetectionRule(),
-        MaliciousJavaScriptDetectionRule()
+        MaliciousJavaScriptDetectionRule(),
+        HiddenTextDetectionRule()
     ]
 }

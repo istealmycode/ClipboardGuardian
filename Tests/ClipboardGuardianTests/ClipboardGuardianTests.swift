@@ -19,6 +19,10 @@ final class ClipboardGuardianTests: XCTestCase {
         ("testAnalyzerDetectsJWT", testAnalyzerDetectsJWT),
         ("testAnalyzerDetectsEncodedPayload", testAnalyzerDetectsEncodedPayload),
         ("testAnalyzerDetectsMaliciousJavaScript", testAnalyzerDetectsMaliciousJavaScript),
+        ("testAnalyzerDetectsHiddenTextWithZeroWidthChars", testAnalyzerDetectsHiddenTextWithZeroWidthChars),
+        ("testAnalyzerDetectsHiddenTextWithBidiControls", testAnalyzerDetectsHiddenTextWithBidiControls),
+        ("testAnalyzerDetectsHiddenTextWithControlCharRatio", testAnalyzerDetectsHiddenTextWithControlCharRatio),
+        ("testAnalyzerDoesNotFlagNormalMultilineTextAsHidden", testAnalyzerDoesNotFlagNormalMultilineTextAsHidden),
         ("testDefaultDetectionRulesIncludeExpandedLocalRules", testDefaultDetectionRulesIncludeExpandedLocalRules)
     ]
 
@@ -228,6 +232,46 @@ final class ClipboardGuardianTests: XCTestCase {
         XCTAssertEqual(findings.count, 1)
         XCTAssertEqual(findings.first?.category, "malicious script")
         XCTAssertEqual(findings.first?.severity, .high)
+    }
+
+    func testAnalyzerDetectsHiddenTextWithZeroWidthChars() {
+        let analyzer = Analyzer(rules: [HiddenTextDetectionRule()])
+        let content = "safe\u{200B}text"
+
+        let findings = analyzer.analyze(content)
+
+        XCTAssertEqual(findings.count, 1)
+        XCTAssertEqual(findings.first?.category, "hidden text")
+        XCTAssertEqual(findings.first?.severity, .high)
+    }
+
+    func testAnalyzerDetectsHiddenTextWithBidiControls() {
+        let analyzer = Analyzer(rules: [HiddenTextDetectionRule()])
+        let content = "abc\u{202E}txt"
+
+        let findings = analyzer.analyze(content)
+
+        XCTAssertEqual(findings.count, 1)
+        XCTAssertEqual(findings.first?.category, "hidden text")
+    }
+
+    func testAnalyzerDetectsHiddenTextWithControlCharRatio() {
+        let analyzer = Analyzer(rules: [HiddenTextDetectionRule()])
+        let content = "ok\u{0001}\u{0002}\u{0003}\u{0004}stilltext"
+
+        let findings = analyzer.analyze(content)
+
+        XCTAssertEqual(findings.count, 1)
+        XCTAssertEqual(findings.first?.category, "hidden text")
+    }
+
+    func testAnalyzerDoesNotFlagNormalMultilineTextAsHidden() {
+        let analyzer = Analyzer(rules: [HiddenTextDetectionRule()])
+        let content = "line one\nline two\twith tab"
+
+        let findings = analyzer.analyze(content)
+
+        XCTAssertTrue(findings.isEmpty)
     }
 
     func testDefaultDetectionRulesIncludeExpandedLocalRules() {
