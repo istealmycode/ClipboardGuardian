@@ -30,3 +30,4 @@ swift test
 - `Sources/ClipboardGuardianApp` — menu-bar app entry point
 - `Sources/clipboardguardian-cli` — optional CLI binary
 - `Tests/ClipboardGuardianTests` — unit and integration tests
+
