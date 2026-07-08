@@ -25,8 +25,9 @@ struct TestRule: DetectionRule {
     }
 }
 
+@Suite("Clipboard Monitor")
 struct ClipboardMonitorTests {
-    @Test
+    @Test("emits findings only when clipboard change count advances")
     func testCheckOnce_callsAnalyzerOnChange() {
         let mock = MockPasteboard()
         mock.changeCount = 0
@@ -49,7 +50,7 @@ struct ClipboardMonitorTests {
         #expect(received.count == 1)
     }
 
-    @Test
+    @Test("notifies safe state after previously dangerous clipboard content")
     func testCheckOnce_notifiesSafeClipboardAfterDangerousContent() {
         let mock = MockPasteboard()
         mock.changeCount = 0
