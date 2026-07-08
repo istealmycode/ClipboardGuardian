@@ -1,6 +1,12 @@
 #!/bin/zsh
 set -euo pipefail
 PROJECT="/Users/john/Projects/ClipboardGuardian/ClipboardGuardian"
+
+# Prevent multiple menu-bar instances.
+if pgrep -x "ClipboardGuardianApp" >/dev/null 2>&1; then
+  exit 0
+fi
+
 BIN=$(find "$PROJECT/.build" -type f -name ClipboardGuardianApp ! -path "*.dSYM/*" | head -n 1)
 if [[ -z "$BIN" ]]; then
   cd "$PROJECT"
