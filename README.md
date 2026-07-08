@@ -45,6 +45,36 @@ Notes:
 swift test
 ```
 
+## Safe Manual Test Text
+
+Use synthetic examples only. Do not copy real credentials, keys, or tokens into your clipboard.
+
+Examples that should be treated as dangerous:
+
+```text
+-----BEGIN PRIVATE KEY-----
+FAKE_KEY_DATA_FOR_LOCAL_TESTING_ONLY
+-----END PRIVATE KEY-----
+```
+
+```text
+ghp_1234567890abcdefghijklmnopqrstuvwxyzABCD
+```
+
+```text
+eval(atob('YWxlcnQoMSk='));
+```
+
+Examples that should be treated as safe:
+
+```text
+Team sync moved to 3pm. Please review the checklist before standup.
+```
+
+```text
+This sentence mentions private key as words only, not actual key material.
+```
+
 ## Project Structure
 
 - `Sources/ClipboardGuardian` — core analyzer logic and detection rules
