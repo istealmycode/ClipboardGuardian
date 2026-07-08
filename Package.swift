@@ -19,9 +19,7 @@ let package = Package(
             targets: ["ClipboardGuardianApp"]
         ),
     ],
-    dependencies: [
-        .package(path: "Dependencies/swift-corelibs-xctest")
-    ],
+    dependencies: [],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
@@ -35,8 +33,7 @@ let package = Package(
         .testTarget(
             name: "ClipboardGuardianTests",
             dependencies: [
-                "ClipboardGuardian",
-                .product(name: "XCTest", package: "swift-corelibs-xctest")
+                "ClipboardGuardian"
             ]
         ),
     ]
