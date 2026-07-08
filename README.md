@@ -9,7 +9,7 @@ A macOS menu-bar clipboard safety monitor that turns red for dangerous clipboard
 - Monitors macOS clipboard changes via `NSPasteboard`
 - Detects private key material and AWS credential leaks
 - Displays status using a menu-bar-only app icon
-- Includes a CLI-friendly analyzer and test coverage
+- Includes analyzer logic with test coverage
 
 ## Build & Run
 
@@ -49,6 +49,5 @@ swift test
 
 - `Sources/ClipboardGuardian` — core analyzer logic and detection rules
 - `Sources/ClipboardGuardianApp` — menu-bar app entry point
-- `Sources/clipboardguardian-cli` — optional CLI binary
 - `Tests/ClipboardGuardianTests` — unit and integration tests
 

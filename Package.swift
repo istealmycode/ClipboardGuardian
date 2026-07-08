@@ -15,10 +15,6 @@ let package = Package(
             targets: ["ClipboardGuardian"]
         ),
         .executable(
-            name: "clipboardguardian-cli",
-            targets: ["clipboardguardian-cli"]
-        ),
-        .executable(
             name: "ClipboardGuardianApp",
             targets: ["ClipboardGuardianApp"]
         ),
@@ -31,10 +27,6 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "ClipboardGuardian"
-        ),
-        .executableTarget(
-            name: "clipboardguardian-cli",
-            dependencies: ["ClipboardGuardian"]
         ),
         .executableTarget(
             name: "ClipboardGuardianApp",
